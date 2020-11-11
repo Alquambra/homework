@@ -33,7 +33,6 @@
 # Скрипт должен принимать параметр --result и печатать на консоль:
 #   Количество очков для результатов ХХХ - УУУ.
 
-#  переименовал файл   01_score.py --> 01_score.py   потому что не импортируется
 
 import argparse
 from bowling import ScoreCalculator, FramesQuantityError
