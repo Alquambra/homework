@@ -28,6 +28,9 @@ FOLDER = ZIP_FOLDER.replace('.zip', '')
 
 
 def time_track(func):
+    """
+    Подсчет времени работы декорируемой функции
+    """
     def surrogate(*args, **kwargs):
         started_at = time.time()
 
@@ -55,6 +58,10 @@ class VolatilityCalculator(Process):
         self.price_storage = []
 
     def run(self):
+        """
+        Метод читает строку из csv файла и добавляет цену в список с ценами и
+        рассчитывает волатильность из списка с ценами для одного файла        
+        """
         with open(os.path.join(self.folder, self.file), 'r', encoding='utf8') as csv:
             csv.readline()
             for line in csv.readlines():
@@ -90,7 +97,9 @@ class ResultBuffer(Process):
         self.buffer = Queue()
 
     def run(self):
-
+        """
+        Метод создает процесс для обработки одного файла
+        """
         for dirname, dirpath, filename in os.walk(self.folder):
             for file in filename:
                 if self.folder in os.listdir(current_path):
@@ -116,7 +125,10 @@ class ResultBuffer(Process):
 
         self.print_result()  # Я вот о чём =)
 
-    def print_result(self):  # отдельный мето как и было раньше.
+    def print_result(self):
+        """
+        Печать результата в консоль
+        """# 
         print('\nМаксимальная волатильность:')
         for ticker in self.ticker_dict[:3]:
             print(f'{ticker[0]} - {ticker[1]} %')
