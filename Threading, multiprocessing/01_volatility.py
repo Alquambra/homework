@@ -82,6 +82,9 @@ FOLDER = ZIP_FOLDER.replace('.zip', '')
 
 
 def time_track(func):
+    """
+    Подсчет времени работы декорируемой функции
+    """
     def surrogate(*args, **kwargs):
         started_at = time.time()
 
@@ -107,6 +110,9 @@ class VolatilityCalculator:
         self.price_storage = []
 
     def create_prices_list(self):
+        """
+        Метод читает строку из csv файла и добавляет цену в список с ценами
+        """
         with open(os.path.join(self.folder, self.file), 'r', encoding='utf8') as csv:
             csv.readline()
             for line in csv.readlines():
@@ -115,6 +121,9 @@ class VolatilityCalculator:
                 self.price_storage.append(float(self.price))
 
     def calculate(self):
+        """
+        Метод рассчитывает волатильность из списка с ценами для одного файла
+        """
         half_sum = (max(self.price_storage) + min(self.price_storage)) / 2
         if half_sum:
             self.volatility = (max(self.price_storage) - min(self.price_storage)) / half_sum * 100
@@ -143,6 +152,9 @@ class VolatilityResult:
         self.zero_ticker_dict = {}
 
     def sort_result(self):
+        """
+        Метод складывает волатильности с нулевым значением в один словарь, с ненулевым - в другой
+        """
         for ticker in self.volatility_calculator_list:
             tick, vol = ticker.run()
             if vol == 0:
@@ -151,6 +163,9 @@ class VolatilityResult:
                 self.ticker_dict[tick] = vol
 
     def print_result(self):
+        """
+        Печать результата в консоль
+        """
         ticker_dict = [(key, self.ticker_dict[key]) for key in
                        sorted(self.ticker_dict, key=self.ticker_dict.get, reverse=True)]
         print('\nМаксимальная волатильность:')
@@ -188,10 +203,5 @@ def main():
 
 
 main()
-# Дмитрий, у меня ошибка при выполнении кода. У Вас нет?
-#  sorted(dict_with_tickers, key=dict_with_tickers, reverse=True)]
-#  TypeError: 'dict' object is not callable
-#  В версии, которую я вам отправил был метод get (key=dict_with_tickers.get), который пропал после вашего коммита
-#  и git никак это не показал. Можете проследить по истории коммитов.
 
 # зачёт!
